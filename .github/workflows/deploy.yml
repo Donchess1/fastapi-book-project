@@ -1,20 +1,22 @@
-name: Deploy to Render
+name: Deploy to AWS
 
 on:
   push:
     branches:
-      - main  
+      - main
 
 jobs:
   deploy:
-    name: Deploy API to Render
     runs-on: ubuntu-latest
 
     steps:
-      - name: Notify Render to Deploy
-        run: |
-          curl -X POST "https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/deploys" \
-            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
-            -H "Accept: application/json" \
-            -H "Content-Type: application/json" \
-            --data '{}'
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: SSH into EC2 and pull changes
+      run: |
+        ssh -i ${{ secrets.AWS_PRIVATE_KEY }} ubuntu@3.15.203.47 << 'EOF'
+          cd your-repo
+          git pull origin main
+          sudo systemctl restart fastapi
+        EOF

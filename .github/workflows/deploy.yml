@@ -24,6 +24,6 @@ jobs:
       run: |
         aws ssm send-command \
           --document-name "AWS-RunShellScript" \
-          --targets "Key=instance-id,Values=${{ secrets.AWS_INSTANCE_ID }}" \
+          --targets "Key=instanceIds,Values=i-xxxxxxxxxxxxxxxxx" \
           --parameters 'commands=["cd /home/ubuntu/fastapi-book-project && git pull origin main && sudo systemctl restart fastapi"]' \
           --region us-east-1

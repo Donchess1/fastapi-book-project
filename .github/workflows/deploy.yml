@@ -16,7 +16,7 @@ jobs:
     - name: SSH into EC2 and pull changes
       run: |
         ssh -i ${{ secrets.AWS_PRIVATE_KEY }} ubuntu@3.15.203.47 << 'EOF'
-          cd your-repo
+          cd fastapi-book-project
           git pull origin main
           sudo systemctl restart fastapi
         EOF
